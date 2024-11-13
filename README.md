@@ -1,70 +1,156 @@
-# Getting Started with Create React App
+# Censys API Hosts Search Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple client-side web application that allows users to search and view IPv4 hosts using the Censys API. The app displays a paginated list of results based on a given search query, showing each host's IP address and the number of associated protocols.
+
+## Table of Contents
+
+- [App Description](#app-description)
+- [Setup Instructions](#setup-instructions)
+- [Available Scripts](#available-scripts)
+- [Environment Variables](#environment-variables)
+- [Testing Instructions](#testing-instructions)
+- [API Reference](#api-reference)
+- [Search Query Examples](#search-query-examples)
+
+## App Description
+
+This application allows users to interact with the Censys API to search for IPv4 hosts and explore associated services and protocols. Users can:
+
+1. Enter a plain-text search query to search for hosts.
+2. View a list of results that displays each host's IP address and the number of protocols.
+3. Navigate through the pages of results using Next and Previous buttons.
+
+This project was created as part of a technical assessment to demonstrate working with a REST API, handling pagination, and implementing a minimal UI.
+
+## Setup Instructions
+
+To set up and run the application locally:
+
+1. Clone the repository to your local machine:
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up the environment variables in a `.env` file at the root of your project (see [Environment Variables](#environment-variables)).
+
+4. Start the development server:
+
+   ```bash
+   npm start
+   ```
+
+5. Open your browser and go to [http://localhost:3000](http://localhost:3000).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+- **`npm start`**: Runs the app in development mode.
+- **`npm test`**: Launches the test runner in watch mode.
+- **`npm run build`**: Builds the app for production.
+- **`npm run lint`**: Checks for linting errors using ESLint.
+- **`npm run format`**: Formats code using Prettier.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Environment Variables
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To interact with the Censys API, you need to configure API credentials in a `.env` file located at the root of the project. These credentials are used for authentication when making API requests.
 
-### `npm test`
+Create a `.env` file with the following content:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```plaintext
+REACT_APP_CENSYS_API_ID=your-censys-api-id
+REACT_APP_CENSYS_API_SECRET=your-censys-api-secret
+```
 
-### `npm run build`
+> **Note:** Do not expose API credentials in public repositories. These values are required for API access and should be kept private.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Testing Instructions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To test the application:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Unit Tests**:
 
-### `npm run eject`
+   - Run `npm test` to execute unit tests.
+   - Unit tests are available for core functions such as `createQuery`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Manual Testing**:
+   - Open the app in development mode (`npm start`).
+   - Enter various queries in the search field and verify that results appear.
+   - Test pagination by clicking the "Next" and "Previous" buttons.
+   - Disconnect from the network or modify API credentials to verify error handling for network errors and authorization errors.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## API Reference
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+This app interacts with the Censys [Search Hosts API](https://search.censys.io/api#/hosts/searchHosts). For additional details on constructing search queries, refer to the [Censys Search Language](https://search.censys.io/search/language).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Cursor Pagination
 
-## Learn More
+The Censys API uses cursor-based pagination. Each response may contain a `links` object with `prev` and `next` cursor tokens, which can be used to navigate between pages. When `next` or `prev` are present, they can be passed as `cursor` parameters to fetch the next or previous page of results.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Search Query Examples
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Here are some sample queries to help you start exploring the Censys API:
 
-### Code Splitting
+- **Search by Service Name**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  ```plaintext
+  services.service_name: HTTP
+  ```
 
-### Analyzing the Bundle Size
+  Searches for hosts with HTTP services running on any port.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Search by IP Range**:
 
-### Making a Progressive Web App
+  ```plaintext
+  ip: [192.168.1.0 TO 192.168.1.255]
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  Finds all hosts within a specific IP range.
 
-### Advanced Configuration
+- **Combine Criteria with Boolean Logic**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+  ```plaintext
+  services.port: 443 AND services.service_name: HTTP
+  ```
 
-### Deployment
+  Searches for hosts with an HTTP service specifically running on port 443.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Wildcard Search**:
 
-### `npm run build` fails to minify
+  ```plaintext
+  services.software.vendor: "Micro*"
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  Finds hosts with a service vendor name that begins with "Micro".
+
+- **Using Nested Field Syntax**:
+
+  ```plaintext
+  services: (port: 80 AND service_name: "HTTP")
+  ```
+
+  Searches for HTTP services running specifically on port 80.
+
+- **Exclude Certain Results**:
+
+  ```plaintext
+  NOT services.service_name: FTP
+  ```
+
+  Excludes hosts with FTP services.
+
+- **Range Search on HTTP Status Codes**:
+  ```plaintext
+  services.http.response.status_code: [500 TO 503]
+  ```
+  Finds hosts that returned HTTP status codes between 500 and 503.
+
+For more complex queries and detailed query language documentation, refer to the [Censys Search Language documentation](https://search.censys.io/search/language).
