@@ -29,8 +29,8 @@ To set up and run the application locally:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/staskurg/censys-api-hosts.git
+   cd censys-api-hosts
    ```
 
 2. Install dependencies:
