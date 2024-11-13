@@ -70,8 +70,6 @@ REACT_APP_CENSYS_API_ID=your-censys-api-id
 REACT_APP_CENSYS_API_SECRET=your-censys-api-secret
 ```
 
-> **Note:** Do not expose API credentials in public repositories. These values are required for API access and should be kept private.
-
 ## Testing Instructions
 
 To test the application:
